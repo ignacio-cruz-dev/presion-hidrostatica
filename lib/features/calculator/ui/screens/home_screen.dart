@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../services/calculation_service.dart';
 import '../../services/storage_service.dart';
 import '../widgets/input_field.dart';
-import '../widgets/result_card.dart';
 import '../widgets/equation_card.dart';
 import '../widgets/history_card.dart';
 import '../../services/pdf_service.dart';
@@ -16,21 +15,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // 1️⃣ VARIABLES
   final rhoController = TextEditingController();
   final hController = TextEditingController();
 
   double? result;
-
   List calculations = [];
+  String selectedUnit = "SI";
 
+  // 2️⃣ LIFECYCLE (SIEMPRE ARRIBA)
   @override
   void initState() {
     super.initState();
     loadHistory();
   }
 
+  @override
+  void dispose() {
+    rhoController.dispose();
+    hController.dispose();
+    super.dispose();
+  }
+
+  // 3️⃣ MÉTODOS (lógica)
+
   void loadHistory() {
-    calculations = StorageService.getCalculations();
+    setState(() {
+      calculations = StorageService.getCalculations();
+    });
   }
 
   void calculate() {
@@ -58,6 +70,39 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // 4️⃣ HELPERS UI
+
+  Widget _unitButton(String label) {
+    final isSelected = selectedUnit == label;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedUnit = label;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blue[800] : Colors.transparent,
+          border: Border.all(color: isSelected ? Colors.amber : Colors.white30),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? Colors.amber : Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 5️⃣ BUILD
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,19 +115,59 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 /// HEADER
-                const Text(
-                  "Petro Pressure Lab / Well Gradient",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.yellow,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.water_drop,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const Text(
+                          "HydroPressure Lab",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    const Text(
+                      "Calculadora de Presión Hidrostática · BHP",
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                /// BOTONES SISTEMAS DE UNIDADES
+                Row(
+                  children: [
+                    Expanded(child: _unitButton("SI")),
+                    const SizedBox(width: 10),
+                    Expanded(child: _unitButton("Campo")),
+                    const SizedBox(width: 10),
+                    Expanded(child: _unitButton("Mixto")),
+                  ],
                 ),
 
                 const SizedBox(height: 20),
 
                 /// INPUT CARD
                 Card(
+                  color: Colors.blue[900],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -147,7 +232,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20),
 
                 /// RESULTADO
-                if (result != null) ResultCard(result: result!),
+                if (result != null)
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text("Resultado"),
+                        const SizedBox(height: 10),
+                        Text(
+                          result!.toStringAsFixed(2),
+                          style: const TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text("Pa"),
+                      ],
+                    ),
+                  ),
 
                 const SizedBox(height: 20),
 
