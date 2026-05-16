@@ -1,23 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:hydro_app/core/enums/unit_system.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/constants/unit_systems.dart';
 
 class PressureChart extends StatelessWidget {
   final double rho;
   final double h;
+  final UnitSystem unit;
 
-  const PressureChart({super.key, required this.rho, required this.h});
+  const PressureChart({
+    super.key,
+    required this.rho,
+    required this.h,
+    required this.unit,
+  });
 
   @override
   Widget build(BuildContext context) {
-    const g = 9.81;
 
     final formatter = NumberFormat.compact();
 
-    /// 🔥 Datos
+    /// Datos
     final data = List.generate(10, (i) {
       final depth = (h / 10) * i;
-      final pressure = rho * g * depth;
+
+      final pressure = UnitConstants.calculatePressure(
+        unit: unit,
+        rho: rho,
+        h: depth,
+      );
+
       return ChartData(pressure, depth);
     });
 
@@ -32,7 +45,7 @@ class PressureChart extends StatelessWidget {
         children: [
           /// TÍTULO
           const Text(
-            "Gráfica: Presión vs Profundidad",
+            "Perfil de presión vs TVD",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
 
@@ -45,7 +58,9 @@ class PressureChart extends StatelessWidget {
               tooltipBehavior: TooltipBehavior(enable: true),
 
               primaryXAxis: NumericAxis(
-                title: AxisTitle(text: 'Presión (Pa)'),
+                title: AxisTitle(
+                  text: 'Presión (${UnitConstants.pressure(unit)})',
+                ),
                 numberFormat: formatter,
 
                 majorGridLines: const MajorGridLines(
@@ -56,7 +71,9 @@ class PressureChart extends StatelessWidget {
 
               /// 🔥 EJE INVERTIDO REAL
               primaryYAxis: NumericAxis(
-                title: AxisTitle(text: 'Profundidad (m)'),
+                title: AxisTitle(
+                  text: 'Profundidad (${UnitConstants.depth(unit)})',
+                ),
                 isInversed: true,
                 minimum: 0,
                 maximum: h,
@@ -100,7 +117,7 @@ class PressureChart extends StatelessWidget {
   }
 }
 
-/// 🔧 MODELO DE DATOS
+/// MODELO DE DATOS
 class ChartData {
   final double pressure;
   final double depth;

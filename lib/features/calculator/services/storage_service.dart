@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import '../../../core/enums/unit_system.dart';
 
 class StorageService {
   static final box = Hive.box('calculations');
@@ -7,11 +8,13 @@ class StorageService {
     required double rho,
     required double h,
     required double result,
+    required UnitSystem unit,
   }) {
     box.add({
       'rho': rho,
       'h': h,
       'result': result,
+      'unit': unit.name,
       'date': DateTime.now().toString(),
     });
   }

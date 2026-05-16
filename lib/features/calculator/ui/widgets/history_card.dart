@@ -1,78 +1,81 @@
 import 'package:flutter/material.dart';
+import '../../../../core/enums/unit_system.dart';
+import '../../../../core/constants/unit_systems.dart';
 
 class HistoryCard extends StatelessWidget {
   final Map item;
   final VoidCallback onDelete;
 
-  const HistoryCard({
-    super.key,
-    required this.item,
-    required this.onDelete,
-  });
+  const HistoryCard({super.key, required this.item, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
+    final unit = UnitSystem.values.firstWhere((e) => e.name == item['unit']);
+
     return Container(
-      margin: EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
-
           /// HEADER
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: Colors.blue[900],
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Cálculo",
-                  style: TextStyle(color: Colors.white),
-                ),
+                const Text("Cálculo", style: TextStyle(color: Colors.white)),
                 IconButton(
-                  icon: Icon(Icons.close, color: Colors.red),
+                  icon: const Icon(Icons.close, color: Colors.red),
                   onPressed: onDelete,
-                )
+                ),
               ],
             ),
           ),
 
           /// BODY
           Padding(
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             child: Column(
               children: [
+                /// RHO + H
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("ρ: ${item['rho']} kg/m³"),
-                    Text("h: ${item['h']} m"),
+                    Text("ρ: ${item['rho']} ${UnitConstants.density(unit)}"),
+                    Text("h: ${item['h']} ${UnitConstants.depth(unit)}"),
                   ],
                 ),
 
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
 
+                /// RESULTADO
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Resultado"),
+                    const Text("Resultado"),
                     Text(
-                      "${item['result'].toStringAsFixed(2)} Pa",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      "${item['result'].toStringAsFixed(2)} ${UnitConstants.pressure(unit)}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
 
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
 
+                /// ECUACIÓN DINÁMICA
                 Text(
-                  "P = ${item['rho']} × 9.81 × ${item['h']}",
+                  UnitConstants.equation(unit)
+                      .replaceAll("ρ", item['rho'].toString())
+                      .replaceAll("h", item['h'].toString()),
                   style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                 ),
               ],
