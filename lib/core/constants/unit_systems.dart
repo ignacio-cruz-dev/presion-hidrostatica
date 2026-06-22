@@ -5,7 +5,7 @@ class UnitConstants {
   static String density(UnitSystem unit) {
     switch (unit) {
       case UnitSystem.api:
-        return "ppg";
+        return "ppg"; // pounds per gallon
       case UnitSystem.mixto:
         return "g/cm³";
       case UnitSystem.si:
@@ -63,28 +63,3 @@ class UnitConstants {
     }
   }
 }
-
-/* import '../enums/unit_system.dart';
-import '../../features/calculator/models/unit_config.dart';
-
-class UnitSystems {
-  static const configs = {
-    UnitSystem.si: UnitConfig(
-      densityUnit: 'kg/m³',
-      depthUnit: 'm',
-      pressureUnit: 'Pa',
-    ),
-
-    UnitSystem.api: UnitConfig(
-      densityUnit: 'lb/ft³',
-      depthUnit: 'ft',
-      pressureUnit: 'psi',
-    ),
-
-    UnitSystem.mixed: UnitConfig(
-      densityUnit: 'g/cc',
-      depthUnit: 'm',
-      pressureUnit: 'psi',
-    ),
-  };
-} */

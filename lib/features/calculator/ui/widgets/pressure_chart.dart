@@ -18,8 +18,8 @@ class PressureChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final formatter = NumberFormat.compact();
+    final isMobile = MediaQuery.of(context).size.width < 600;
 
     /// Datos
     final data = List.generate(10, (i) {
@@ -35,25 +35,29 @@ class PressureChart extends StatelessWidget {
     });
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isMobile ? 14 : 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// TÍTULO
-          const Text(
+          Text(
             "Perfil de presión vs TVD",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: isMobile ? 16 : 18,
+              color: Colors.black87,
+            ),
           ),
 
           const SizedBox(height: 16),
 
           /// GRÁFICA
           SizedBox(
-            height: 300,
+            height: isMobile ? 240 : 300,
             child: SfCartesianChart(
               tooltipBehavior: TooltipBehavior(enable: true),
 
@@ -91,13 +95,17 @@ class PressureChart extends StatelessWidget {
                   xValueMapper: (ChartData data, _) => data.pressure,
                   yValueMapper: (ChartData data, _) => data.depth,
 
+                  animationDuration: 800,
                   width: 3,
-                  color: Colors.blueAccent,
+                  color: const Color(0xFF3B82F6),
 
                   markerSettings: const MarkerSettings(
                     isVisible: true,
-                    height: 6,
-                    width: 6,
+                    height: 5,
+                    width: 5,
+                    borderWidth: 2,
+                    borderColor: Colors.blue,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -108,7 +116,7 @@ class PressureChart extends StatelessWidget {
 
           /// DESCRIPCIÓN
           const Text(
-            "La presión aumenta con la profundidad",
+            "El perfil muestra el incremento de presión con respecto a la profundidad.",
             style: TextStyle(fontSize: 12),
           ),
         ],
