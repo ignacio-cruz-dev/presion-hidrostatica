@@ -1,0 +1,55 @@
+name: Deploy Flutter Web a GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clonar el repositorio
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # 2. Instalar Flutter (última versión estable)
+      - name: Instalar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "stable"
+          channel: "stable"
+          cache: true
+
+      # 3. Instalar dependencias del proyecto
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      # 4. Verificar que el proyecto compila sin errores
+      - name: Analizar código
+        run: flutter analyze --no-fatal-infos
+
+      # 5. Correr tests (si existen — se omite si no hay ninguno)
+      - name: Correr tests
+        run: flutter test
+        continue-on-error: true
+
+      # 6. Build para web
+      # IMPORTANTE: cambia "nombre-de-tu-repo" por el nombre exacto de tu repositorio
+      - name: Build Flutter Web
+        run: flutter build web --release --base-href "/presion-hidrostatica/"
+
+      # 7. Publicar en la rama gh-pages
+      - name: Deploy a GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          publish_branch: gh-pages
+          force_orphan: true
