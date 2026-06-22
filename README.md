@@ -1,17 +1,168 @@
-# hydro_app
+# HydroPressure Lab
 
-A new Flutter project.
+HydroPressure Lab is a professional Flutter application designed for hydrostatic pressure calculations used in drilling, petroleum engineering, and industrial fluid analysis.
 
-## Getting Started
+Developed by Grupo TANIS Ingeniería y Consultoría.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+# 🚀 Features
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Hydrostatic pressure calculation (BHP)
+- Multiple unit systems:
+  - SI Metric
+  - Field Units (ppg / ft)
+  - Mixed System
+- Real-time pressure visualization
+- Fluid presets:
+  - Fresh water
+  - Salt water
+  - Light mud
+  - Heavy mud
+  - Oil
+  - Cement
+- Interactive depth slider
+- Calculation history
+- PDF report generation
+- Responsive Web + Mobile UI
+- Custom splash screen
+- Professional industrial design
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+# 🛠 Technologies Used
+
+- Flutter
+- Dart
+- Hive (Local Storage)
+- PDF / Printing
+- Syncfusion Charts
+- Font Awesome
+- URL Launcher
+
+---
+
+# 📱 Screenshots
+
+## Mobile Version
+
+- Splash Screen
+- Hydrostatic Pressure Calculator
+- Fluid Selection
+- PDF Export
+
+## Web Version
+
+Responsive interface compatible with desktop and mobile browsers.
+
+---
+
+# 📂 Project Structure
+
+```text
+lib/
+├── core/
+│   ├── constants/
+│   ├── enums/
+│   └── theme/
+│
+├── features/
+│   └── calculator/
+│       ├── models/
+│       ├── services/
+│       ├── ui/
+│       │   ├── screens/
+│       │   └── widgets/
+```
+
+---
+
+# ⚙️ Getting Started
+
+## Requirements
+
+- Flutter SDK 3.x
+- Dart SDK
+- Android Studio or VSCode
+- Android SDK
+
+---
+
+# 📦 Installation
+
+Clone repository:
+
+```bash
+git clone <repository_url>
+```
+
+Install dependencies:
+
+```bash
+flutter pub get
+```
+
+Run app:
+
+```bash
+flutter run
+```
+
+---
+
+# 🤖 Build APK
+
+## Debug APK
+
+```bash
+flutter build apk
+```
+
+## Release APK
+
+```bash
+flutter build apk --release
+```
+
+APK generated at:
+
+```text
+build/app/outputs/flutter-apk/app-release.apk
+```
+
+---
+
+# 🎨 Splash Screen
+
+Generated with:
+
+```bash
+dart run flutter_native_splash:create
+```
+
+---
+
+# 🧩 Launcher Icon
+
+Generated with:
+
+```bash
+dart run flutter_launcher_icons
+```
+
+---
+
+# 🌐 Supported Platforms
+
+- Android
+- Web
+
+---
+
+# 🏢 Developed By
+
+## Grupo TANIS
+
+Altas Soluciones para la Industria
+
+---

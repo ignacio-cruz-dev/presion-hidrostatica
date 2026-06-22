@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import '../../../core/enums/unit_system.dart';
+import 'package:intl/intl.dart';
 
 class StorageService {
   static final box = Hive.box('calculations');
@@ -15,16 +16,24 @@ class StorageService {
       'h': h,
       'result': result,
       'unit': unit.name,
-      'date': DateTime.now().toString(),
+      'date': DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),
     });
   }
 
-  static List getCalculations() {
-    return box.values.toList().reversed.toList();
+  static List<Map> getCalculations() {
+    return box.keys
+        .map((key) {
+          final item = Map<String, dynamic>.from(box.get(key));
+          item['key'] = key;
+          return item;
+        })
+        .toList()
+        .reversed
+        .toList();
   }
 
-  static void delete(int index) {
-    box.deleteAt(index);
+  static void delete(dynamic key) {
+    box.delete(key);
   }
 
   static void clear() {
