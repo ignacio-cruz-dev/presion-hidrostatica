@@ -292,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "HydroPressure Lab V2",
+                                  "HydroPressure Lab :)",
                                   style: TextStyle(
                                     fontSize: isMobile ? 18 : 44,
                                     letterSpacing: 0.5,
